@@ -6,36 +6,43 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+  <!-- ================= [META BÁSICO] ================= -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Rotisserie Israel - Sabor autêntico e tradição. Pratos que contam histórias. Faça seu pedido agora mesmo.">
   <title>Rotisserie Israel — Sabor e Tradição</title>
 
-  <!-- ================= PWA: Manifest + tema/ícone ================= -->
-<link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#1D5131">
-<link rel="icon" href="/public/icons/icon-192.png">
-<link rel="apple-touch-icon" href="./assets/icons/icon 192.png">
+  <!-- ================ [PWA: Manifest + ícones + tema] ================ -->
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <!-- Cor do tema (barra do navegador) -->
+  <meta name="theme-color" content="#1D5131">
+  <!-- Ícones corretos (sem espaço) -->
+  <link rel="icon" href="/assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="/assets/icons/icon-512.png">
 
+  <!-- ================= [ESTILOS] ================= -->
   <!-- CSS base (cores, reset, utilitários) -->
-  <link rel="stylesheet" href="public/css/base.css">
+  <link rel="stylesheet" href="/public/css/base.css">
   <!-- CSS específico da Home -->
-  <link rel="stylesheet" href="public/css/index.css">
-  <!-- HEAD: css do banner -->
-
-<link rel="stylesheet" href="/public/css/pwa-install.css">
-
+  <link rel="stylesheet" href="/public/css/index.css">
+  <!-- CSS do banner/botão de instalação PWA -->
+  <link rel="stylesheet" href="/public/css/pwa-install.css">
 </head>
-<body class="index">
 
-  <!-- [HEADER] Navbar moderna e responsiva -->
+<body class="index">
+  <!-- ================= [HEADER / NAVBAR] ================= -->
   <header class="header">
     <div class="inner container">
+      <!-- Marca -->
       <div class="brand">
         <span class="brand__icon">🍗</span>
         ROTISSERIE ISRAEL
       </div>
-      <nav class="nav">
+
+      <!-- Menu (ganha comportamento mobile via navbar.js) -->
+      <nav class="nav" id="mobileMenu" aria-label="Menu principal">
         <a href="index.html" class="nav__link nav__link--active">Início</a>
         <a href="cardapio.html" class="nav__link">Cardápio</a>
         <a href="carrinho.html" class="nav__link">
@@ -45,7 +52,14 @@
         <a href="pedidos.html" class="nav__link">Pedidos</a>
         <a href="login.html" class="nav__link nav__link--cta">Entrar</a>
       </nav>
-      <button class="nav-toggle" aria-label="Abrir menu" id="navToggle">
+
+      <!-- Botão hamburguer (controla o menu no mobile) -->
+      <button
+        class="nav-toggle"
+        id="navToggle"
+        aria-label="Abrir menu"
+        aria-controls="mobileMenu"
+        aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -53,14 +67,14 @@
     </div>
   </header>
 
-  <!-- [HERO] Seção principal com layout moderno -->
+  <!-- ================= [HERO] ================= -->
   <section class="hero">
     <div class="hero__inner container">
       <div class="hero__copy">
         <div class="hero__badge">🎉 Promoção da Semana</div>
         <h1 class="hero__title">Sabor autêntico, <span class="text-gradient">tradição e carinho</span></h1>
         <p class="hero__subtitle">Pratos que contam histórias. Experiência única de sabores do Oriente Médio com toque caseiro.</p>
-        
+
         <div class="hero__cta">
           <a class="btn btn--primary btn--large" href="cardapio.html">
             <span class="btn__icon"></span>
@@ -106,7 +120,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Elementos decorativos -->
     <div class="hero__decoration">
       <div class="decoration__item decoration__item--1"></div>
@@ -115,13 +129,13 @@
     </div>
   </section>
 
-  <!-- [DESTAQUES] Cards com design moderno -->
+  <!-- ================= [DESTAQUES] ================= -->
   <section class="destaques container" id="destaques">
     <div class="section__header">
       <h2>Destaques do Dia</h2>
       <p>Seleção especial de pratos frescos preparados hoje</p>
     </div>
-    
+
     <div class="grid grid-3">
       <article class="card card--product">
         <div class="card__header">
@@ -154,7 +168,7 @@
           <h3>Quibe Assado</h3>
           <p>Tradição que derrete na boca. Preparado com carne selecionada e trigo fino.</p>
           <div class="card__rating">
-             <span class="rating__count">(89)</span>
+            <span class="rating__count">(89)</span>
           </div>
         </div>
         <div class="card__footer">
@@ -187,7 +201,7 @@
     </div>
   </section>
 
-  <!-- [CTA] Chamada final para ação -->
+  <!-- ================= [CTA FINAL] ================= -->
   <section class="cta">
     <div class="container cta__content">
       <div class="cta__text">
@@ -204,11 +218,10 @@
     </div>
   </section>
 
-  <!-- [FOOTER] Rodapé completo -->
+  <!-- ================= [FOOTER] ================= -->
   <footer class="footer">
     <div class="container">
       <div class="footer__content">
-        <div class="footer__section">
         <div class="footer__section">
           <h4>Links Rápidos</h4>
           <nav class="footer__nav">
@@ -218,7 +231,7 @@
             <a href="contato.html">Contato</a>
           </nav>
         </div>
-        
+
         <div class="footer__section">
           <h4>Contato</h4>
           <div class="contact-info">
@@ -227,22 +240,22 @@
             <p>R. Tito Oliani, 944 - São João Climaco, São Paulo - SP, 04256-000</p>
           </div>
         </div>
-        
-      
+      </div>
+
       <div class="footer__bottom">
         <p>© 2025 Rotisserie Israel • Feito com ♥ em aula</p>
-        <div class="payment-methods">
-        </div>
+        <div class="payment-methods"></div>
       </div>
     </div>
   </footer>
 
+  <!-- ================= [SCRIPTS] ================= -->
   <!-- JS da Home -->
-  <script src="public/js/index.js"></script>
-
-  <!-- Service-worker -->
-  <script src="/public/js/pwa-register.js"></script>
+  <script src="/public/js/index.js" defer></script>
+  <!-- Navbar (abre/fecha menu mobile) -->
+  <script src="/public/js/navbar.js" defer></script>
+  <!-- Service Worker + banner de instalação PWA -->
+  <script src="/public/js/pwa-register.js" defer></script>
   <script src="/public/js/pwa-install.js" defer></script>
-  
 </body>
 </html>

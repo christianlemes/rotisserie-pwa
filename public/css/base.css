@@ -85,3 +85,62 @@ html, body {
   text-align: center;
   font-weight: 600;
 }
+/* ================================================
+   NAV MOBILE — aparência e comportamento
+   ================================================ */
+
+/* Botão hambúrguer (3 barrinhas) */
+.nav-toggle {
+  display: none;
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  gap: 5px;
+  background: transparent; border: 0; cursor: pointer;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 2px;
+  background: #1D5131; border-radius: 2px;
+  transition: transform .25s ease, opacity .2s ease;
+}
+
+/* Estado “aberto” -> animação vira um X */
+.nav-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Menu desktop normal */
+.nav { display: flex; gap: 1rem; }
+
+/* Mobile: menu vira “drawer” dropdown */
+@media (max-width: 992px) {
+  .nav-toggle { display: inline-flex; }
+
+  .nav {
+    position: absolute;
+    top: 64px; right: 16px; left: 16px;
+    display: none;                    /* oculto por padrão */
+    flex-direction: column;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0,0,0,.16);
+    padding: 12px;
+    z-index: 9999;
+  }
+  .nav.is-open { display: flex; }
+
+  .nav__link { padding: 10px 12px; border-radius: 10px; }
+  .nav__link:hover { background: #E5E5E3; }
+
+  /* Evita rolagem do body com menu aberto */
+  body.no-scroll { overflow: hidden; }
+}
+
+/* Backdrop (clique fora para fechar) */
+.nav-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.25);
+  backdrop-filter: blur(1px);
+  z-index: 9998;
+  display: none;
+}
+.nav-backdrop.show { display: block; }
