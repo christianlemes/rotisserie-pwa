@@ -1,0 +1,140 @@
+<!-- ======================================================
+     [CARDAPIO.HTML]
+     Design profissional com UX aprimorada
+     ====================================================== -->
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cardápio completo da Rotisserie Israel - Sabores autênticos do Oriente Médio">
+  <title>Cardápio — Rotisserie Israel</title>
+
+<!-- ================= PWA: Manifest + tema/ícone ================= -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#1D5131">
+<link rel="icon" href="/public/icons/icon-192.png">
+<link rel="apple-touch-icon" href="./assets/icons/icon 192.png">
+
+  <!-- CSS base do projeto -->
+  <link rel="stylesheet" href="public/css/base.css">
+  <!-- CSS específico da tela de Cardápio -->
+  <link rel="stylesheet" href="public/css/cardapio.css">
+</head>
+<body class="cardapio-page">
+  <!-- [HEADER] Navbar moderna -->
+  <header class="header">
+    <div class="inner container">
+      <div class="brand">
+        <span class="brand__icon">🍗</span>
+        ROTISSERIE ISRAEL
+      </div>
+      <nav class="nav">
+        <a href="index.html">Início</a>
+        <a class="nav__link--active" href="cardapio.html">Cardápio</a>
+        <a href="carrinho.html" class="nav__link--cart">
+          Carrinho
+          <span class="nav__badge" id="cartCount">0</span>
+        </a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="login.html" class="nav__link--cta">Entrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- [MAIN] Conteúdo -->
+  <main class="container page">
+    <div class="page-header">
+      <h1 class="page-title">Nosso Cardápio</h1>
+      <p class="page-subtitle">Sabores autênticos preparados com tradição</p>
+    </div>
+
+    <!-- [FILTROS] Barra com busca + categorias -->
+    <section class="filters-section">
+      <div class="filters-card card">
+        <!-- Busca por texto -->
+        <div class="search-box">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input 
+              id="filtro" 
+              type="text" 
+              placeholder="Buscar prato, categoria ou ingrediente…" 
+              aria-label="Buscar no cardápio"
+              class="search-input"
+            >
+            <button id="btnLimpar" class="search-clear" title="Limpar busca" aria-label="Limpar busca">
+              <span>×</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Contadores e info -->
+        <div class="filters-info">
+          <span id="resultsCount" class="results-count">Carregando...</span>
+          <span class="filters-active" id="activeFilters"></span>
+        </div>
+
+        <!-- Botões de categoria -->
+        <div class="categories-section">
+          <h3 class="categories-title">Categorias</h3>
+          <div id="catBar" class="cat-bar" role="tablist" aria-label="Categorias do cardápio"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [LISTA] Grid de cards -->
+    <section id="lista" class="menu-grid" aria-live="polite">
+      <!-- Renderizado dinamicamente via JS -->
+    </section>
+
+    <!-- [VAZIO] Estado vazio amigável -->
+    <section id="empty" class="empty-state hidden" aria-live="polite">
+      <div class="empty-illustration">
+        <div class="empty-emoji">🍽️</div>
+        <div class="empty-wave">🌊</div>
+      </div>
+      <h3 class="empty-title">Nenhum item encontrado</h3>
+      <p class="empty-description">Tente ajustar os filtros ou buscar por outro termo.</p>
+      <div class="empty-actions">
+        <button id="btnLimparTudo" class="btn btn--primary">
+          <span class="btn__icon">🔄</span>
+          Limpar todos os filtros
+        </button>
+      </div>
+    </section>
+
+    <!-- [LOADING] Skeleton loading -->
+    <section id="loading" class="skeleton-grid">
+      <div class="skeleton-card">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-price"></div>
+        </div>
+      </div>
+      <!-- Repetir 6x para skeleton -->
+    </section>
+  </main>
+
+  <!-- [FLOATING CART] Botão flutuante do carrinho -->
+  <div class="floating-cart" id="floatingCart">
+    <button class="floating-cart__btn" onclick="window.location.href='carrinho.html'">
+      <span class="floating-cart__icon">🛒</span>
+      <span class="floating-cart__count" id="floatingCartCount">0</span>
+      <span class="floating-cart__text">Ver Carrinho</span>
+    </button>
+  </div>
+
+  <!-- [FOOTER] -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 Rotisserie Israel • Sabores que conectam tradição e inovação</p>
+    </div>
+  </footer>
+
+  <!-- JS da tela -->
+  <script src="public/js/cardapio.js"></script>
+</body>
+</html>

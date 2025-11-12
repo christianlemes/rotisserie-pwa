@@ -1,0 +1,100 @@
+/* =========================================================
+   PWA Install — Estilos do banner/botão de instalação
+   Paleta: verde #1D5131 / claro #E5E5E3
+   ========================================================= */
+
+/* ---------- container fixo (bottom) ---------- */
+.pwa-install-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 9999;
+  display: none;                /* começa oculto; JS mostra quando for possível instalar */
+  background: #ffffff;
+  color: #1D5131;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0,0,0,.12);
+  padding: 16px;
+  gap: 16px;
+  align-items: center;
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- layout interno ---------- */
+.pwa-install-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.pwa-install-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #E5E5E3 url('/assets/icons/icon-192.png') center/cover no-repeat;
+  flex-shrink: 0;
+}
+
+.pwa-install-text {
+  line-height: 1.25;
+}
+.pwa-install-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0 0 4px 0;
+  color: #1D5131;
+}
+.pwa-install-sub {
+  font-size: 12px;
+  color: #2b2b2b;
+  margin: 0;
+}
+
+/* ---------- botões ---------- */
+.pwa-install-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.pwa-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .04s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.pwa-btn-install {
+  background: #1D5131;
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(29,81,49,.25);
+}
+.pwa-btn-install:hover { transform: translateY(-1px); }
+
+.pwa-btn-later {
+  background: #E5E5E3;
+  color: #1D5131;
+}
+
+.pwa-install-close {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #1D5131;
+  opacity: .6;
+}
+.pwa-install-close:hover { opacity: 1; }
+
+/* ---------- helper ---------- */
+.pwa-hidden { display: none !important; }
+
+/* ---------- mobile: ocupa largura total ---------- */
+@media (max-width: 560px) {
+  .pwa-install-banner { left: 12px; right: 12px; bottom: 12px; }
+}

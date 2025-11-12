@@ -1,0 +1,70 @@
+<!-- ======================================================
+     [CARRINHO.HTML] — Lista carrinho, permite remover itens
+     e finalizar compra (grava pedido no banco).
+     ====================================================== -->
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <title>Carrinho — Rotisserie Israel</title>
+  <link rel="stylesheet" href="public/css/base.css">
+  <link rel="stylesheet" href="public/css/carrinho.css"><!-- opcional -->
+  
+    <!-- ================= PWA: Manifest + tema/ícone ================= -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#1D5131">
+<link rel="icon" href="/public/icons/icon-192.png">
+<link rel="apple-touch-icon" href="./assets/icons/icon 192.png">
+</head>
+<body>
+  <!-- [HEADER] Navbar -->
+  <header class="header">
+    <div class="inner container">
+      <div class="brand">ROTISSERIE ISRAEL</div>
+      <nav class="nav">
+        <a href="index.html">Início</a>
+        <a href="cardapio.html">Cardápio</a>
+        <a href="carrinho.html">Carrinho</a>
+        <a href="pedidos.html" onclick="alert('Em breve!'); return false;">Pedidos</a>
+        <a href="login.html">Entrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- [CARRINHO] -->
+  <main class="container">
+    <h1>Meu carrinho</h1>
+
+    <div id="lista" class="grid"></div>
+
+    <div id="total" class="card" style="margin-top:12px; display:none;">
+      <h3>Total</h3>
+      <p id="vlr">R$ 0,00</p>
+    </div>
+
+    <!-- [ENDEREÇO] Dados mínimos para finalizar -->
+    <section class="card" style="margin-top:12px;">
+      <h3>Endereço de Entrega</h3>
+      <div class="grid" style="grid-template-columns: 1fr 160px 1fr;">
+        <label>Rua
+          <input id="rua" placeholder="Rua Exemplo" style="padding:10px; border:2px solid var(--verde-claro); border-radius:10px;">
+        </label>
+        <label>Nº
+          <input id="num" placeholder="123" style="padding:10px; border:2px solid var(--verde-claro); border-radius:10px;">
+        </label>
+        <label>Bairro
+          <input id="bai" placeholder="Centro" style="padding:10px; border:2px solid var(--verde-claro); border-radius:10px;">
+        </label>
+      </div>
+
+      <div style="margin-top:12px;">
+        <button class="btn" id="btnFinalizar">Finalizar compra</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">© 2025 Rotisserie Israel</footer>
+
+  <script src="public/js/carrinho.js"></script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+/* ============================================================
+   LOGIN.CSS — Tela de autenticação (Google OAuth + local)
+   Design profissional com conceitos de UX
+   ============================================================ */
+
+:root{
+  --brand:     #1f8a5b;
+  --brand-light: #e9f7f0;
+  --brand-dark:  #0d6e47;
+  --accent:    #c0392b;
+  --ink:       #0f172a;
+  --muted:     #6b7280;
+  --light-muted: #9ca3af;
+  --bg:        #f7faf9;
+  --card:      #ffffff;
+  --border:    #e5e7eb;
+  --border-focus: #1f8a5b;
+  --shadow:    0 10px 25px rgba(2,6,23,.05);
+  --shadow-hover: 0 20px 40px rgba(2,6,23,.1);
+
+  --radius-lg: 20px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  --space-2:   8px;
+  --space-3:   16px;
+  --space-4:   24px;
+  --space-5:   32px;
+  --space-6:   48px;
+  --font:      ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+  --transition: all 0.2s ease;
+}
+
+/* ------------------------------
+   Reset e base
+   ------------------------------ */
+* {
+  box-sizing: border-box;
+}
+
+/* ------------------------------
+   Fundo e centralização
+   ------------------------------ */
+body.login{
+  font-family: var(--font);
+  background:
+    radial-gradient(800px 220px at 10% 0%, #e9f7f0, transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+/* ------------------------------
+   Header
+   ------------------------------ */
+.header {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+  color: var(--brand);
+}
+
+/* ------------------------------
+   Cartão de login
+   ------------------------------ */
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5) var(--space-3);
+}
+
+.auth__card{
+  width: min(440px, 92vw);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: var(--space-5);
+  transition: var(--transition);
+}
+
+.auth__card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.auth__header {
+  text-align: center;
+  margin-bottom: var(--space-5);
+}
+
+.auth__card h1{
+  margin: 0 0 var(--space-2);
+  font-size: clamp(24px, 3.2vw, 28px);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.auth__subtitle{
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ------------------------------
+   Botões
+   ------------------------------ */
+.btn{
+  appearance:none; 
+  border:none; 
+  cursor:pointer;
+  font-weight:600; 
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.btn:focus-visible{
+  outline: 3px solid color-mix(in srgb, var(--brand) 35%, #ffffff);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Botão Google */
+.btn--google{
+  width:100%; 
+  background:#fff; 
+  color:#1f2937;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.btn--google:hover, 
+.btn--google:focus {
+  transform: translateY(-1px); 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  border-color: var(--light-muted);
+}
+
+/* Botão primário */
+.btn--primary{
+  background: var(--brand); 
+  color:#fff; 
+  width:100%;
+  box-shadow: 0 2px 4px rgba(31, 138, 91, 0.2);
+}
+
+.btn--primary:hover, 
+.btn--primary:focus {
+  background: var(--brand-dark);
+  transform: translateY(-1px); 
+  box-shadow: 0 4px 8px rgba(31, 138, 91, 0.3);
+}
+
+/* Elementos internos dos botões */
+.btn__icon {
+  display: flex;
+  align-items: center;
+}
+
+.btn__text {
+  flex: 1;
+}
+
+.btn__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: none;
+}
+
+.btn--loading .btn__spinner {
+  display: block;
+}
+
+.btn--loading .btn__text {
+  opacity: 0.7;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ------------------------------
+   Divisor “ou”
+   ------------------------------ */
+.auth__divider{
+  margin: var(--space-4) 0;
+  position:relative; 
+  text-align:center; 
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.auth__divider::before{
+  content:""; 
+  position:absolute; 
+  left:0; 
+  right:0; 
+  top:50%;
+  height:1px; 
+  background: var(--border);
+}
+
+.auth__divider span{
+  position:relative; 
+  background: var(--card); 
+  padding: 0 12px;
+}
+
+/* ------------------------------
+   Formulário
+   ------------------------------ */
+.auth__form{ 
+  display:grid; 
+  gap: var(--space-4); 
+}
+
+.field{
+  display:grid; 
+  gap: var(--space-2);
+}
+
+.label{
+  font-weight:600; 
+  font-size:0.9rem;
+  color: var(--ink);
+}
+
+.input{
+  border: 1.5px solid var(--border); 
+  background:#fff; 
+  color: var(--ink);
+  border-radius: var(--radius-md); 
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+
+.input::placeholder{ 
+  color:var(--light-muted); 
+}
+
+.input:focus{
+  outline:none; 
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 20%, transparent);
+}
+
+.input--error {
+  border-color: #ef4444;
+}
+
+.input--error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.field__feedback {
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  margin-top: 4px;
+}
+
+.field__feedback--error {
+  color: #ef4444;
+}
+
+.field__feedback--success {
+  color: var(--brand);
+}
+
+/* ------------------------------
+   Rodapé da autenticação (cadastro)
+   ------------------------------ */
+.auth__footer{
+  margin-top: var(--space-4);
+  text-align:center; 
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.auth__footer a{ 
+  color: var(--brand); 
+  font-weight:600; 
+  text-decoration:none; 
+}
+
+.auth__footer a:hover{ 
+  text-decoration: underline; 
+}
+
+/* ------------------------------
+   Mensagens de feedback
+   ------------------------------ */
+.msg{
+  font-size: 0.92rem; 
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: var(--space-3);
+}
+
+.msg--error{
+  background: #fef2f2; 
+  border: 1px solid #fecaca; 
+  color: #991b1b;
+}
+
+.msg--success{
+  background: #f0fdf4; 
+  border: 1px solid #bbf7d0; 
+  color: #166534;
+}
+
+/* ------------------------------
+   Footer
+   ------------------------------ */
+.footer {
+  padding: var(--space-4) 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* ------------------------------
+   Responsividade
+   ------------------------------ */
+@media (max-width: 480px) {
+  .auth__card {
+    padding: var(--space-4);
+  }
+  
+  .auth {
+    padding: var(--space-3) var(--space-2);
+  }
+  
+  .header .inner {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}
