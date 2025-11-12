@@ -6,38 +6,31 @@
 const CACHE_VERSION = 'v1.0.1'; // <-- subi a versão pra forçar update
 const CACHE_STATIC  = `rotisserie-static-${CACHE_VERSION}`;
 const CACHE_DYNAMIC = `rotisserie-dyn-${CACHE_VERSION}`;
-const OFFLINE_URL   = '/offline.html';
+const OFFLINE_URL   = './offline.html';
 
-/* ------------------------------------------------------------
-   [Pré-cache] — arquivos essenciais para abrir offline
-   ATENÇÃO: liste APENAS o que existe de verdade no projeto
------------------------------------------------------------- */
 const PRECACHE_URLS = [
-  '/',                    // ok se o docroot é a raiz do projeto
-  '/index.html',
-  '/cardapio.html',
-  '/carrinho.html',
-  '/login.html',
-  '/offline.html',
-  '/manifest.webmanifest',
-
-  // CSS
-  '/public/css/base.css',
-  '/public/css/index.css',
-  '/public/css/cardapio.css',
-  '/public/css/login.css',
-
-  // JS
-  '/public/js/index.js',
-  '/public/js/cardapio.js',
-  '/public/js/carrinho.js',
-  '/public/js/login.js',
-  '/public/js/pwa-register.js',
-
-  // ÍCONES (corrigido: assets/icons e não public/icons)
-  '/assets/icons/icon-192.png',
-  '/assets/icons/icon-512.png'
+  './',
+  './index.html',
+  './cardapio.html',
+  './carrinho.html',
+  './login.html',
+  './offline.html',
+  './manifest.webmanifest',
+  './public/css/base.css',
+  './public/css/index.css',
+  './public/css/cardapio.css',
+  './public/css/login.css',
+  './public/css/pwa-install.css',
+  './public/js/index.js',
+  './public/js/cardapio.js',
+  './public/js/carrinho.js',
+  './public/js/login.js',
+  './public/js/pwa-register.js',
+  './public/js/pwa-install.js',
+  './assets/icons/icon-192.png',
+  './assets/icons/icon-512.png'
 ];
+
 
 /* ============================================================
    [Install] — abre cache estático e pré-cacheia arquivos
