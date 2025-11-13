@@ -1,8 +1,6 @@
 // ======================================================
-// [LOGIN.JS] — Lógica da tela de login com UX aprimorada
-// - Estados de loading e feedback visual
-// - Validação básica de campos
-// - Transições suaves
+// [LOGIN.JS] — Tela de login com UX aprimorada
+// AGORA COM LOGIN REAL via API (NADA DE SIMULAÇÃO)
 // ======================================================
 
 class LoginManager {
@@ -14,13 +12,13 @@ class LoginManager {
         this.googleBtn = document.getElementById('btnGoogle');
         this.formEmail = document.getElementById('formEmail');
         this.submitBtn = this.formEmail?.querySelector('button[type="submit"]');
-        
+
         this.setupEventListeners();
         this.setupFormValidation();
     }
 
     setupEventListeners() {
-        // Botão Google com estado de loading
+        // Botão Google (mantém placeholder para etapa OAuth)
         this.googleBtn?.addEventListener('click', (e) => {
             e.preventDefault();
             this.handleGoogleLogin();
@@ -32,7 +30,6 @@ class LoginManager {
             this.handleEmailLogin(e);
         });
 
-        // Feedback visual para interações
         this.setupInputInteractions();
     }
 
@@ -50,7 +47,6 @@ class LoginManager {
             input.addEventListener('focus', () => {
                 input.parentElement.classList.add('field--focused');
             });
-            
             input.addEventListener('blur', () => {
                 input.parentElement.classList.remove('field--focused');
             });
@@ -72,7 +68,7 @@ class LoginManager {
                     message = 'Por favor, insira um e-mail válido';
                 }
                 break;
-            
+
             case 'text':
                 if (!value) {
                     isValid = false;
@@ -105,7 +101,7 @@ class LoginManager {
     showFieldStatus(field, isValid, message = '') {
         field.classList.remove('input--error', 'input--success');
         const feedback = field.parentElement.querySelector('.field__feedback');
-        
+
         if (!feedback) return;
 
         if (isValid) {
@@ -119,41 +115,17 @@ class LoginManager {
         }
     }
 
-    async handleGoogleLogin() {
-        // Simulação do fluxo OAuth com estados visuais
-        try {
-            this.setButtonLoading(this.googleBtn, true);
-            
-            // Simula delay de rede
-            await this.delay(1500);
-            
-            // Feedback visual antes do alert
-            this.showToast('Redirecionando para autenticação Google...', 'info');
-            
-            await this.delay(500);
-            
-            alert('🔐 OAuth Google virá na próxima etapa!\n\n' +
-                  'No fluxo real:\n' +
-                  '1. Redirecionamento para Google\n' +
-                  '2. Autenticação na conta Google\n' +
-                  '3. Retorno com tokens de acesso\n' +
-                  '4. Criação de sessão no sistema');
-                  
-        } catch (error) {
-            this.showToast('Erro na autenticação. Tente novamente.', 'error');
-        } finally {
-            this.setButtonLoading(this.googleBtn, false);
-        }
-    }
-
+    // ---------------------------------------------------------------
+    // 🔥 LOGIN REAL (NÃO É MAIS SIMULADO)
+    // ---------------------------------------------------------------
     async handleEmailLogin(event) {
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData.entries());
-        
-        // Valida todos os campos
+
+        // Validação geral
         const inputs = event.target.querySelectorAll('input[required]');
         let allValid = true;
-        
+
         inputs.forEach(input => {
             if (!this.validateField(input)) {
                 allValid = false;
@@ -167,119 +139,47 @@ class LoginManager {
 
         try {
             this.setButtonLoading(this.submitBtn, true);
-            
-            // Simula processamento
-            await this.delay(1200);
-            
-            // Feedback visual melhorado
-            this.showLoginSuccess(data);
-            
+
+            // 🔥 ENVIA LOGIN REAL PARA O BACK-END
+            const r = await fetch('api.php?action=login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nome: data.nome,
+                    email: data.email
+                })
+            });
+
+            const j = await r.json();
+
+            if (!j.ok) {
+                this.showToast(j.error || 'Erro no login', 'error');
+                return;
+            }
+
+            // 🔥 LOGIN OK → redireciona pro index
+            this.showToast('Login realizado! Redirecionando...', 'success');
+            await this.delay(600);
+            window.location.href = 'index.html';
+
         } catch (error) {
-            this.showToast('Erro no login. Tente novamente.', 'error');
+            console.error(error);
+            this.showToast('Erro ao conectar com o servidor.', 'error');
         } finally {
             this.setButtonLoading(this.submitBtn, false);
         }
     }
 
-    showLoginSuccess(data) {
-        // Cria modal de sucesso mais elaborado
-        const modal = document.createElement('div');
-        modal.className = 'login-feedback';
-        modal.innerHTML = `
-            <div class="login-feedback__content">
-                <div class="login-feedback__icon">✓</div>
-                <h3>Login Simulado com Sucesso!</h3>
-                <div class="login-feedback__data">
-                    <p><strong>Nome:</strong> ${data.nome}</p>
-                    <p><strong>E-mail:</strong> ${data.email}</p>
-                </div>
-                <div class="login-feedback__note">
-                    ⚠️ Na próxima etapa isso será substituído por:<br>
-                    • Validação real na API<br>
-                    • Criação de sessão<br>
-                    • Redirecionamento automático
-                </div>
-                <button class="btn btn--primary" onclick="this.closest('.login-feedback').remove()">
-                    Continuar
-                </button>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Adiciona estilos inline para o feedback
-        if (!document.querySelector('#login-feedback-styles')) {
-            const styles = document.createElement('style');
-            styles.id = 'login-feedback-styles';
-            styles.textContent = `
-                .login-feedback {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0,0,0,0.5);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 1000;
-                    animation: fadeIn 0.3s ease;
-                }
-                
-                .login-feedback__content {
-                    background: white;
-                    padding: 2rem;
-                    border-radius: 12px;
-                    text-align: center;
-                    max-width: 400px;
-                    margin: 1rem;
-                    animation: slideUp 0.3s ease;
-                }
-                
-                .login-feedback__icon {
-                    font-size: 3rem;
-                    color: #1f8a5b;
-                    margin-bottom: 1rem;
-                }
-                
-                .login-feedback__data {
-                    text-align: left;
-                    background: #f8f9fa;
-                    padding: 1rem;
-                    border-radius: 8px;
-                    margin: 1rem 0;
-                }
-                
-                .login-feedback__note {
-                    font-size: 0.85rem;
-                    color: #666;
-                    margin: 1rem 0;
-                    line-height: 1.4;
-                }
-                
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                
-                @keyframes slideUp {
-                    from { 
-                        opacity: 0;
-                        transform: translateY(20px);
-                    }
-                    to { 
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-            `;
-            document.head.appendChild(styles);
-        }
+    // ---------------------------------------------------------------
+    // Mantém placeholder do Google OAuth
+    // ---------------------------------------------------------------
+    async handleGoogleLogin() {
+        this.showToast('Login Google será ativado em breve!', 'info');
     }
 
     setButtonLoading(button, isLoading) {
         if (!button) return;
-        
+
         if (isLoading) {
             button.classList.add('btn--loading');
             button.disabled = true;
@@ -292,71 +192,16 @@ class LoginManager {
     }
 
     showToast(message, type = 'info') {
-        // Remove toast anterior se existir
         const existingToast = document.querySelector('.toast');
-        if (existingToast) {
-            existingToast.remove();
-        }
+        if (existingToast) existingToast.remove();
 
         const toast = document.createElement('div');
         toast.className = `toast toast--${type}`;
         toast.textContent = message;
-        
-        // Adiciona estilos para o toast
-        if (!document.querySelector('#toast-styles')) {
-            const styles = document.createElement('style');
-            styles.id = 'toast-styles';
-            styles.textContent = `
-                .toast {
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    padding: 12px 20px;
-                    border-radius: 8px;
-                    color: white;
-                    font-weight: 500;
-                    z-index: 1001;
-                    animation: slideInRight 0.3s ease, slideOutRight 0.3s ease 2.7s forwards;
-                    max-width: 300px;
-                }
-                
-                .toast--info { background: #1f8a5b; }
-                .toast--error { background: #dc2626; }
-                .toast--success { background: #16a34a; }
-                
-                @keyframes slideInRight {
-                    from { 
-                        transform: translateX(100%);
-                        opacity: 0;
-                    }
-                    to { 
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                }
-                
-                @keyframes slideOutRight {
-                    from { 
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                    to { 
-                        transform: translateX(100%);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(styles);
-        }
-        
+
         document.body.appendChild(toast);
-        
-        // Remove automaticamente após 3 segundos
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.remove();
-            }
-        }, 3000);
+
+        setTimeout(() => toast.remove(), 3000);
     }
 
     delay(ms) {
@@ -364,16 +209,7 @@ class LoginManager {
     }
 }
 
-// Inicialização quando o DOM estiver pronto
+// Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     new LoginManager();
-});
-
-// Fallback para o código original (mantém compatibilidade)
-document.getElementById('btnGoogle')?.addEventListener('click', (e) => {
-    e.preventDefault();
-});
-
-document.getElementById('formEmail')?.addEventListener('submit', (e) => {
-    e.preventDefault();
 });

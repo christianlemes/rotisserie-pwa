@@ -1,6 +1,7 @@
 // ======================================================
 // [INDEX.JS] — Interações e melhorias de UX para a Home
 // Foco: Animações, feedback visual e microinterações
+// + Integração com sessão (login/logout)
 // ======================================================
 
 class HomeInteractions {
@@ -22,7 +23,7 @@ class HomeInteractions {
         document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
-                
+
                 if (href !== '#') {
                     const target = document.querySelector(href);
                     if (target) {
@@ -40,7 +41,7 @@ class HomeInteractions {
     // 2. Interações com cards de destaque
     setupCardInteractions() {
         const cards = document.querySelectorAll('.card, .feature');
-        
+
         cards.forEach(card => {
             // Efeito de levantamento suave
             card.addEventListener('mouseenter', () => {
@@ -68,7 +69,7 @@ class HomeInteractions {
     // 3. Microinterações em botões
     setupButtonMicrointeractions() {
         const buttons = document.querySelectorAll('.btn');
-        
+
         buttons.forEach(button => {
             // Efeito ripple
             button.addEventListener('click', (e) => {
@@ -88,7 +89,7 @@ class HomeInteractions {
     setupHeroAnimation() {
         const hero = document.querySelector('.hero');
         const heroCard = document.querySelector('.hero__card');
-        
+
         if (hero && heroCard) {
             // Animação de entrada do card
             setTimeout(() => {
@@ -108,7 +109,7 @@ class HomeInteractions {
 
     // 5. Estados de loading para ações
     setupLoadingStates() {
-        // Simular loading para links que levam a outras páginas
+        // Simular loading para links que levam a outras páginas (ex: cardápio)
         document.querySelectorAll('a[href*="cardapio"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 if (!link.classList.contains('btn--loading')) {
@@ -130,7 +131,7 @@ class HomeInteractions {
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
-                    
+
                     // Animação em cascata para grids
                     if (entry.target.classList.contains('grid-3')) {
                         const items = entry.target.querySelectorAll('.card, .feature');
@@ -148,7 +149,7 @@ class HomeInteractions {
         const elementsToAnimate = document.querySelectorAll(
             '.features, .callout, .grid-3, .trust'
         );
-        
+
         elementsToAnimate.forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
@@ -197,7 +198,7 @@ class HomeInteractions {
                     animation: ripple-animation 0.6s linear;
                     pointer-events: none;
                 }
-                
+
                 @keyframes ripple-animation {
                     to {
                         transform: scale(4);
@@ -214,7 +215,7 @@ class HomeInteractions {
     // Simular estado de loading
     simulateLoading(button, duration) {
         const originalText = button.innerHTML;
-        
+
         button.classList.add('btn--loading');
         button.innerHTML = `
             <span class="btn__spinner"></span>
@@ -232,10 +233,10 @@ class HomeInteractions {
     // Simular navegação com feedback
     simulateNavigationLoading(event, link) {
         event.preventDefault();
-        
+
         link.classList.add('btn--loading');
         const originalText = link.innerHTML;
-        
+
         link.innerHTML = `
             <span class="btn__spinner"></span>
             Redirecionando...
@@ -263,11 +264,81 @@ class HomeInteractions {
 }
 
 // ======================================================
+// FUNÇÕES AUXILIARES DE SESSÃO / NAVBAR
+// ======================================================
+
+// Faz chamada na API pra saber se tem usuário logado
+async function fetchSessionUser() {
+    try {
+        const r = await fetch('api.php?action=me', { method: 'GET' });
+        const j = await r.json();
+        if (j.ok && j.data) {
+            return j.data; // { id, nome, email }
+        }
+    } catch (e) {
+        console.warn('Não foi possível verificar sessão (talvez sem PHP aqui).', e);
+    }
+    return null;
+}
+
+// Atualiza a navbar de acordo com o usuário
+function updateNavbarUserUI(user) {
+    // Elementos opcionais — só atualiza se existirem
+    const loginLink  = document.getElementById('navLogin') 
+                    || document.querySelector('a[href="login.html"]');
+    const userNameEl = document.getElementById('navUserName');
+    const logoutBtn  = document.getElementById('btnLogout');
+
+    if (user) {
+        // Usuário logado
+        if (loginLink) {
+            loginLink.style.display = 'none';
+        }
+        if (userNameEl) {
+            userNameEl.textContent = `Olá, ${user.nome}`;
+            userNameEl.style.display = 'inline-flex';
+        }
+        if (logoutBtn) {
+            logoutBtn.style.display = 'inline-flex';
+        }
+    } else {
+        // Usuário NÃO logado
+        if (loginLink) {
+            loginLink.style.display = 'inline-flex';
+        }
+        if (userNameEl) {
+            userNameEl.textContent = '';
+            userNameEl.style.display = 'none';
+        }
+        if (logoutBtn) {
+            logoutBtn.style.display = 'none';
+        }
+    }
+}
+
+// Configura o botão de logout, se existir
+function setupLogoutHandler() {
+    const logoutBtn = document.getElementById('btnLogout');
+    if (!logoutBtn) return;
+
+    logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+            await fetch('api.php?action=logout', { method: 'POST' });
+        } catch (err) {
+            console.error('Erro ao deslogar:', err);
+        }
+        // Depois do logout, volta pra home em estado deslogado
+        window.location.href = 'index.html';
+    });
+}
+
+// ======================================================
 // INICIALIZAÇÃO E FUNÇÕES GLOBAIS
 // ======================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar interações
+document.addEventListener('DOMContentLoaded', async () => {
+    // Inicializar interações de UI
     new HomeInteractions();
 
     // Header sticky com background ao scrollar
@@ -286,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Adicionar estilos para estados de loading
+    // Estilos para estados de loading de botões
     if (!document.querySelector('#btn-loading-styles')) {
         const styles = document.createElement('style');
         styles.id = 'btn-loading-styles';
@@ -296,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 pointer-events: none;
                 opacity: 0.8;
             }
-            
+
             .btn__spinner {
                 width: 16px;
                 height: 16px;
@@ -307,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 display: inline-block;
                 margin-right: 8px;
             }
-            
+
             @keyframes spin {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
@@ -315,6 +386,11 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         document.head.appendChild(styles);
     }
+
+    // 🔐 Integração com sessão — atualiza navbar
+    const user = await fetchSessionUser();
+    updateNavbarUserUI(user);
+    setupLogoutHandler();
 });
 
 // Função utilitária para debounce (performance)
